@@ -1,0 +1,12 @@
+Flourish - An action packed tree growing game
+---------------------------------------------
+
+Click and drag to branch your tree, try to grow over the green blocks, avoid the
+red blocks.
+
+Flourish requires:
+- ruby 1.8.x
+- gosu 0.7.x    http://code.google.com/p/gosu/
+
+Flourish is pretty basic, but still kind of entertaining.  There are a lot of
+rough edges still, some day it might even be fun...
