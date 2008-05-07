@@ -1,16 +1,10 @@
-class GameState
+class GameState < FlourishState
   attr_accessor :score
   attr_reader :tree
   attr_reader :lives
-  attr_reader :cursor_x
-  attr_reader :cursor_y
   
-  def initialize(previous_state)
-    @previous_state = previous_state
-    
-    @cursor = Point.new
-    @cursor_image = Game.load_image :cursor
-    @selection = Selection.new
+  def initialize(previous_state=nil)
+    super
     
     @score_label = Label.new 0,0, nil
     @score_label.outline_color = 0x66666666
@@ -21,7 +15,6 @@ class GameState
     @desc_label = Label.new 400,68, nil, Game.load_font(Gosu::default_font_name, 32)
     @desc_label.outline_color = 0x66666666
     
-    @width,@height = Game.window.width, Game.window.height
     @maps = MapLoader.new('levels')
     @level = 0
     reset
@@ -51,16 +44,11 @@ class GameState
   end
   
   def update
-    time = Gosu::milliseconds
-    x = Game.window.mouse_x
-    y = Game.window.mouse_y
-    @cursor.x = (x < 0 ? 0 : x > @width ? @width : x).to_i
-    @cursor.y = (y < 0 ? 0 : y > @height ? @height : y).to_i
-    @selection.update(@cursor)
+    super
     @tree.select_point(@cursor) unless @selection.visible?
     
     if @last_time
-      delta = time - @last_time
+      delta = @time - @last_time
       @tree.update(delta)
       @map.update(delta)
       @score_label.update delta
@@ -80,17 +68,13 @@ class GameState
       end
     end
     
-    @last_time = time
+    @last_time = @time
   end
   
   def draw
+    super 
     # Draw the background
     Game.window.draw_quad(0, 0, 0xFFFFFFFF, 0, 600, 0xFFFFFFCC, 800, 0, 0xFFFFFFFF, 800, 600, 0xFFFFFFCC, z=0)
-    
-    if @cursor.x and @cursor.y
-      @cursor_image.draw(@cursor.x, @cursor.y,ZOrder::UI)
-      @selection.draw
-    end
     
     @map.draw
     @dead_trees.each do |tree|
@@ -113,7 +97,7 @@ class GameState
       @tree.select_next(-1)
     elsif id == Game.window.char_to_button_id('d')
       @tree.die
-    elsif id == Game.window.char_to_button_id('n')
+    elsif id == Game.window.char_to_button_id('n') # Cheat!
       next_level
     end
   end

@@ -1,27 +1,17 @@
-class GameOverState
-  attr_reader :cursor_x
-  attr_reader :cursor_y
+class GameOverState < FlourishState
   
   def initialize(previous_state=nil)
-    @cursor = Point.new
-    @cursor_image = Game.load_image :cursor
-    @font = Game.load_font Gosu::default_font_name, 64
-    @small_font = Game.load_font Gosu::default_font_name, 32
-    @previous_state = previous_state
+    super
     @menu = Menu.new ["Replay Level", "Quit Game"], 400, 200
-    @width, @height = Game.window.width, Game.window.height
   end
   
   def update
-    time = Gosu::milliseconds
-    x = Game.window.mouse_x
-    y = Game.window.mouse_y
-    @cursor.x = (x < 0 ? 0 : x > @width ? @width : x).to_i
-    @cursor.y = (y < 0 ? 0 : y > @height ? @height : y).to_i
+    super
     @menu.update 0
   end
   
   def draw
+    super
     # Draw the background
     @previous_state.draw 
     Game.window.draw_quad(0, 0, 0x88660000, 0, 600, 0x88660000, 800, 0, 0x88660000, 800, 600, 0x88660000, z=5)
@@ -31,9 +21,7 @@ class GameOverState
   end
   
   def button_down(id)
-    if id == Gosu::Button::KbEscape
-      Game.window.close
-    elsif id == Gosu::Button::KbUp
+    if id == Gosu::Button::KbUp
       @menu.select_previous
     elsif id == Gosu::Button::KbDown
       @menu.select_next
@@ -47,10 +35,9 @@ class GameOverState
     elsif id == Game.window.char_to_button_id('r')
       Game.pop_state
       Game.state.reset
+    else
+      super
     end
   end
   
-  def button_up(id)
-    
-  end
 end

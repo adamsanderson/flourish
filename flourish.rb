@@ -3,6 +3,7 @@ require 'gosu'
 require 'singleton'
 
 require 'lib/support'
+require 'lib/flourish_state'
 
 Dir["lib/*.rb"].each do |file|
   require file
