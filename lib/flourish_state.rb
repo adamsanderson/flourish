@@ -30,13 +30,9 @@ class FlourishState
   end
   
   def button_down(id)
-    if id == Gosu::Button::KbEscape
-      Game.window.close
-    end
   end
   
   def button_up(id)
-  
   end
   
 end

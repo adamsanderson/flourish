@@ -87,9 +87,7 @@ class GameState < FlourishState
   end
   
   def button_down(id)
-    if id == Gosu::Button::KbEscape
-      Game.window.close
-    elsif  id == Gosu::Button::MsLeft && ! @selection.visible?
+    if  id == Gosu::Button::MsLeft && ! @selection.visible?
       @selection.start = @cursor.clone
     elsif id == Gosu::Button::KbTab || id == Gosu::Button::MsWheelDown
       @tree.select_next(+1)
